@@ -1,0 +1,48 @@
+<div class="container">
+ <div class="row no-gutters"></div>
+ <!--gutters（ガーター)→カラム間のパディング（要素の内側の余白)のこと-->
+  <div class="col-md5 col-sm-10 mx-2 mx-sm-auto shadow-lg rounded px-0 my-5">
+  <!--col-md5とcol-sm-10のcolのclassが二つあるのは画面幅が切り替わったときに調節するため-->
+  <!--roundedは要素の角を丸くする-->
+   <h5 class="text-dark bg-light p-4 mb-0">画像投稿フォーム</h5>
+   <div class="form-body p-4">
+    <% if @post_image.errors.any? %>
+    <!--errorsはモデルにバリデーションをかけたときに発生した
+    エラーの内容を確認できるメソッド
+    any?と組み合わせることでエラーが発生しているかを判定できる-->
+     <ul class="alert alert-danger" role="alert">
+     <!--role属性　アラートロール
+     <指定したい要素 role="roleの値">入力内容</指定したい要素>-->
+      <h6 class="alert-heading">
+        <%= @post_image.errors.count %>件のエラーが発生しました
+      </h6>
+        <!--エラー文は配列で保存されているためeachメソッドを使う-->
+        <% @post_image.errors.full_messages.each do |message| %>
+        <!--full_messageでエラーの内容を出力できる-->
+        <li><%= message %></li>
+        <% end %>
+     </ul>
+        <% end %>
+        <%= form_with model: @post_image do |f| %>
+         <%= f.file_field :image, accept: "image/*", class: "w-100" %>
+         <!--accept:は受け入れるという記述。今回はimageのみを受け入れるとなる-->
+         <!--input groupはフォームコントローラを拡張できる-->
+         <div class="input-group mb-3 mt-4">
+          <div class="input-group-prepend">
+           <span class="input-group-text" aria-hidden="true">
+           <!--aria-hiddenはアイコンフォントなどを「文字」として読み上げるのを
+           防止する
+           aria-hidden="true"で読み上げをスキップ(読み上げない）-->
+            <i class="fas fa-building"></i>
+           </span>
+          </div>
+          <%= f.text_field :shop_name, class:"form-control", placeholder:"ショップ名" %>
+         </div>
+          <%= f.text_area :caption, class:"form-control", rows:"3", placeholder:"コメントここに" %>
+          <hr>
+          <%= f.submit '投稿', class:"btn btn-lg btn-block btn-info mt-4" %>
+         <% end %>
+       </div>
+  </div>
+ </div>
+</div>
